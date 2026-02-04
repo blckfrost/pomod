@@ -1,27 +1,29 @@
 package main
 
-import "time"
+import (
+	"fmt"
+	"os"
 
-type State string
-
-const (
-	Idle    State = "IDLE"
-	Running State = "RUNNING"
-	Paused  State = "PAUSED"
+	"github.com/blckfrost/pomod.git/internal/notify"
 )
 
-type Mode string
+func main() {
+	switch os.Args[1] {
+	case "waybar":
+		fmt.Println("okay waybar here you go")
+		notify.Send("waybar up and running")
+	case "ctl":
+		fmt.Println("waiting for controls")
+		notify.Send("controls waiting")
+	case "daemon":
+		fmt.Println("daemon running...")
+		notify.Send("Daemon is running")
 
-const (
-	Work  Mode = "WORK"
-	Break Mode = "BREAK"
-)
+	default:
+		usage()
+	}
+}
 
-type Pomodoro struct {
-	State    State
-	Mode     Mode
-	Duration int
-	Start    time.Time
-	PauseRem int
-	Count    int
+func usage() {
+	fmt.Println("Usage: pomod daemon | waybar | ctl")
 }
