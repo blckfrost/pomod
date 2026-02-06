@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net"
 	"os"
@@ -9,8 +10,6 @@ import (
 	"github.com/blckfrost/pomod.git/internal/core"
 	"github.com/blckfrost/pomod.git/internal/notify"
 )
-
-const socketPath = "/tmp/pomod.sock"
 
 var pomo = core.New()
 
@@ -46,10 +45,9 @@ func handleConn(conn net.Conn) {
 	switch cmd {
 	case "toggle":
 		pomo.Toggle()
+
+	case "state":
+		json.NewEncoder(conn).Encode(pomo)
 	}
 
-}
-
-func Usage() {
-	fmt.Println("Usage: pomod daemon | waybar | ctl")
 }
